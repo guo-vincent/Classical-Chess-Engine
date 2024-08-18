@@ -1,0 +1,11 @@
+chess-engine\ChessCpp\NeuralNetwork\Chess_White
+chess-engine\ChessCpp\NeuralNetwork\Chess_White_2
+chess-engine\ChessCpp\NeuralNetwork\CSVFiles\Black.csv
+chess-engine\ChessCpp\NeuralNetwork\CSVFiles\White.csv
+chess-engine\ChessCpp\NeuralNetwork\Scalers
+chess-engine\ChessCpp\NeuralNetwork\CNN.py
+chess-engine\ChessCpp\NeuralNetwork\filereader.cpp
+chess-engine\ChessCpp\NeuralNetwork\VisualTransformer.py
+chess-engine\ChessCpp\chess.hpp
+chess-engine\ChessCpp\Eval.hpp
+chess-engine\ChessCpp\test.cpp

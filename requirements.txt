@@ -1,0 +1,10 @@
+python-chess==*
+numpy==*
+pandas==*
+scikit-learn==*
+tensorflow==* 
+matplotlib==*
+seaborn==*
+jupyter==*
+pytest==*
+python-dotenv==*
