@@ -247,7 +247,7 @@ class Evaluation {
         std::array<int, 64> late_white_queen_table;
         std::array<int, 64> white_king_table;
 
-        std::array<int, 64> mirror_table(const std::array<int, 64>& table) const {
+        std::array<int, 64> mirror_table(const std::array<int, 64> &table) const {
             std::array<int, 64> mirrored_table;
             for (int rank = 0; rank < 8; ++rank) {
                 for (int file = 0; file < 8; ++file) {
@@ -272,17 +272,17 @@ class Evaluation {
 
         // Constants. Will be optimized by machine learning model later. Currently has no getters/setters.
         // Pawn:
-        static constexpr int doubled_pawn_penalty = 10;
-        static constexpr int isolated_pawn_penalty = 10;
-        static constexpr int passed_pawn_bonus = 40;
-        static constexpr int pawn_center_control = 10;
-        static constexpr int valuable_pawn_captures_bonus = 75;
-        static constexpr int backwards_pawn_penalty = 10;
-        static constexpr int pawn_chain_bonus = 20;
+        static constexpr int doubled_pawn_penalty = 20;
+        static constexpr int isolated_pawn_penalty = 20;
+        static constexpr int passed_pawn_bonus = 50;
+        static constexpr int pawn_center_control = 100;
+        static constexpr int valuable_pawn_captures_bonus = 5;
+        static constexpr int backwards_pawn_penalty = 20;
+        static constexpr int pawn_chain_bonus = 30;
 
         // Bishop
-        static constexpr int bishop_mobility_bonus = 4;
-        static constexpr int bishop_center_bonus = 10;
+        static constexpr int bishop_mobility_bonus = 5;
+        static constexpr int bishop_center_bonus = 40;
 
         // Rook
         static constexpr int rook_open_file_bonus = 35;
@@ -290,7 +290,7 @@ class Evaluation {
         static constexpr int rook_mobility_bonus = 5;
 
         // Knight
-        static constexpr int knight_mobility_bonus = 5;
+        static constexpr int knight_mobility_bonus = 25;
 
         // All:
         static constexpr int king_restriction_bonus = 8;
@@ -327,7 +327,7 @@ class Evaluation {
 
     int naive_material_balance() {
         int balance = 0;
-        for (chess::Color::underlying color : {chess::Color::WHITE, chess::Color::BLACK}) {
+        for (chess::Color::underlying color: {chess::Color::WHITE, chess::Color::BLACK}) {
             for (chess::PieceType::underlying piece_type : {chess::PieceType::PAWN, chess::PieceType::KNIGHT, chess::PieceType::BISHOP,
                                     chess::PieceType::ROOK, chess::PieceType::QUEEN}) {
                 chess::Bitboard pieces = data.pieces(piece_type, color);
@@ -337,19 +337,21 @@ class Evaluation {
                 int piece_value = 0;
                 switch (piece_type) {
                     case chess::PieceType::PAWN:
-                        material_value_map[chess::PieceType::PAWN] = 100;
+                        material_value_map[chess::PieceType::PAWN] = 200;
                         break;
                     case chess::PieceType::KNIGHT:
-                        material_value_map[chess::PieceType::KNIGHT] = 300;
+                        material_value_map[chess::PieceType::KNIGHT] = 600;
                         break;
                     case chess::PieceType::BISHOP:
-                        material_value_map[chess::PieceType::BISHOP] = 350;
+                        material_value_map[chess::PieceType::BISHOP] = 700;
                         break;
                     case chess::PieceType::ROOK:
-                        material_value_map[chess::PieceType::ROOK] = 500;
+                        material_value_map[chess::PieceType::ROOK] = 1000;
                         break;
                     case chess::PieceType::QUEEN:
-                        material_value_map[chess::PieceType::QUEEN] = 900;
+                        material_value_map[chess::PieceType::QUEEN] = 1800;
+                        break;
+                    default:
                         break;
                 }
                 // (+) if white, (-) if black
@@ -442,7 +444,6 @@ class Evaluation {
             while (pawns_in_file) {
                 int square_index = pawns_in_file.lsb(); // Get least significant bit index
                 pawn_positions.push_back(chess::Square(square_index));
-                // std::cout << color << " Pawn Square index: " << std::to_string(square_index) << '\n';
                 pawn_position_score += (color == chess::Color::WHITE) ? white_pawn_table[square_index]: -black_pawn_table[square_index];
                 (void)pawns_in_file.pop(); // Remove the least significant bit
             }
@@ -595,14 +596,14 @@ class Evaluation {
             int allied_attackers_total = Helper::total_attackers(bishop_support), enemy_attackers_total = Helper::total_attackers(bishop_is_attacked);
             if (bishop_is_attacked[chess::PieceType::PAWN]) {
                 // Bishop can be taken by a pawn, so it is essentially lost
-                bishop_position_score -= (color == chess::Color::WHITE ? 150: -150); // Will be adjusted
+                bishop_position_score -= (color == chess::Color::WHITE ? 75: -75); // Will be adjusted
                 continue;
             }
             if (enemy_attackers_total && !allied_attackers_total) {
-                bishop_position_score -= (color == chess::Color::WHITE ? 150: -150);
+                bishop_position_score -= (color == chess::Color::WHITE ? 75: -75);
                 continue;
             } else if (enemy_attackers_total >= allied_attackers_total) {
-                bishop_position_score -= (enemy_attackers_total - allied_attackers_total) * 15; // Will be adjusted later.;
+                bishop_position_score -= (enemy_attackers_total - allied_attackers_total) * 15; // Will be adjusted later;
                 continue;
             } 
         }
@@ -660,11 +661,11 @@ class Evaluation {
             std::unordered_map<chess::PieceType, int> knight_support = Helper::isAttackedCount(data, sq, color);
             int allied_attackers_total = Helper::total_attackers(knight_support), enemy_attackers_total = Helper::total_attackers(knight_is_attacked);
             if (enemy_attackers_total && !allied_attackers_total) {
-                knight_position_score -= (color == chess::Color::WHITE ? 125: -125);
+                knight_position_score -= (color == chess::Color::WHITE ? 60: -60);
                 continue;
             } else if (knight_is_attacked[chess::PieceType::PAWN]) {
                 // Knight can be taken by a pawn, so it is essentially lost
-                knight_position_score -= (color == chess::Color::WHITE ? 100: -100); // Will be adjusted
+                knight_position_score -= (color == chess::Color::WHITE ? 50: -50); // Will be adjusted
                 continue;
             } else if (enemy_attackers_total >= allied_attackers_total) {
                 knight_position_score -= (enemy_attackers_total - allied_attackers_total) * 15; // Will be adjusted later.
@@ -748,14 +749,14 @@ class Evaluation {
             std::unordered_map<chess::PieceType, int> rook_support = Helper::isAttackedCount(data, sq, color);
             int allied_attackers_total = Helper::total_attackers(rook_support), enemy_attackers_total = Helper::total_attackers(rook_is_attacked);
             if (enemy_attackers_total && !allied_attackers_total) {
-                rook_position_score -= (color == chess::Color::WHITE ? 225: -225); // Will be adjusted
+                rook_position_score -= (color == chess::Color::WHITE ? 125: -125); // Will be adjusted
                 continue;
             } else if (rook_is_attacked[chess::PieceType::PAWN]){ // Pawn can take rook. Almost always a bad exchange.
-                rook_position_score -= (color == chess::Color::WHITE ? 225: -225); // Will be adjusted
+                rook_position_score -= (color == chess::Color::WHITE ? 125: -125); // Will be adjusted
                 continue;
             } else if (rook_is_attacked[chess::PieceType::KNIGHT] || rook_is_attacked[chess::PieceType::BISHOP]) {
                 if (allied_attackers_total < enemy_attackers_total) { // Opposing side will win exchange, leading to loss of material
-                    rook_position_score -= (color == chess::Color::WHITE ? 100: -100);
+                    rook_position_score -= (color == chess::Color::WHITE ? 50: -50);
                     continue;
                 }
             } else if (enemy_attackers_total >= allied_attackers_total) {
@@ -814,16 +815,6 @@ class Evaluation {
             if (Helper::any(queen_attacks, BitOp::get_surrounding_bits(enemy_king))) {
                 pins_and_checks_score += (color == chess::Color::WHITE ? king_restriction_bonus: -king_restriction_bonus);
             }
-        }
-        // Encourages queens to not be in a position where they can be captured
-        for (chess::Square sq: queen_location) {
-            std::unordered_map<chess::PieceType, int> queen_is_attacked = Helper::isAttackedCount(data, sq, color == chess::Color::WHITE ? chess::Color::BLACK: chess::Color::WHITE);
-            std::unordered_map<chess::PieceType, int> queen_support = Helper::isAttackedCount(data, sq, color); 
-            int allied_attackers_total = Helper::total_attackers(queen_support), enemy_attackers_total = Helper::total_attackers(queen_is_attacked);
-            if (enemy_attackers_total) {
-                queen_position_score -= (color == chess::Color::WHITE ? 450: -450); // Will be adjusted
-                continue;
-            } 
         }
     }
 

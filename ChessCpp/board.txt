@@ -1,0 +1,39 @@
+ r n b q k b n r 
+ p p p p p p p p 
+ . . . . . . . . 
+ . . . . . . . . 
+ . . . . . . . . 
+ . . . . . . . . 
+ P P P P P P P P 
+ R N B Q K B N R 
+
+
+Side to move: 0
+Castling rights: KQkq
+Halfmoves: 0
+Fullmoves: 1
+EP: 64
+Hash: 5060803636482931868
+
+
+Move evaluation: 0
+w's move: d2d4
+Board fen: rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1
+Board after move:
+ r n b q k b n r 
+ p p p p p p p p 
+ . . . . . . . . 
+ . . . . . . . . 
+ . . . P . . . . 
+ . . . . . . . . 
+ P P P . P P P P 
+ R N B Q K B N R 
+
+
+Side to move: 1
+Castling rights: KQkq
+Halfmoves: 0
+Fullmoves: 1
+EP: 64
+Hash: 9443689642921087454
+

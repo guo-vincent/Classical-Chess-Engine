@@ -30,14 +30,26 @@ https://github.com/guo-vincent/Chess_Evaluation_Neural_Network.git
 
 
 Usage
-Currently in progress.
+The main file to use is test.cpp. 
+Run <g++ -std=c++20 -o test test.cpp> to compile, followed by <./test>
+Alternatively, you may directly execute the test.exe file located in the folder.
+
+The test file when executed, will write a board object in board.txt. 
+The location for which the board is to be outputted can be specified.
+After entering a move, click out of the file and back in to let the file refresh.
+
+The file has only been tested on c++20. It is unknown how the engine will perform on older c++ versions.
+
+Other Notes:
+This engine is stronger playing as white than as black, though it still makes stupid mistakes.
+This is not a strong engine. Don't expect amazing plays from it. 
+Quiescence Search has been temporarily disabled for being a buggy. It will be reenabled when the bugs are resolved.
 
 Command Line Usage
 In bash:
 cd /path_to_this_project/ChessCpp
 {compiler test.cpp}
-./test.exe or ./test.out.
-The engine will print the best move found for the given position in standard chess notation.
+The engine will print the best move it finds for the given position in standard chess notation.
 
 Configuration
 To be added later. Currently in progress.
