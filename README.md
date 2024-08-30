@@ -1,38 +1,49 @@
-Overview:
-This Chess Engine utilizes the disservin's chess library for move generation and employs a custom evaluation function to guide the engine's decision-making process. The engine uses several advanced algorithms, including Minimax with Alpha-Beta Pruning, Quiescence Search, and Transposition Tables, to optimize move selection and provide stronger gameplay.
+# Chess Engine Overview
 
-Features:
-Move Generation - The engine leverages disservin's chess library for efficient move generation, ensuring that it complies with chess rules while calculating legal moves for any position.
+This Chess Engine leverages the disservin's chess library for move generation and uses a custom evaluation function to guide the decision-making process. It employs advanced algorithms such as Minimax with Alpha-Beta Pruning, Quiescence Search, and Transposition Tables to optimize move selection and enhance gameplay.
 
-Evaluation Function: A simple evaluation function is implemented, which considers not only material advantage but also some tactical factors such as:
-- Doubled Pawns: Penalizes positions where pawns of the same color are stacked on the same file.
-- Rooks on Open Files: Rewards positions where rooks are placed on open files or doubled up on the same rank or file, increasing control over the board.
-- Piece Mobility: Rewards pieces for being in positions where they can defend more squares. 
+## Features
 
-Search and Evaluation Algorithms:
-- Minimax with Alpha-Beta Pruning
-- Quiescence Search
-- Transposition Tables
+### Move Generation
+- **Chess Library**: Utilizes disservin's chess library for efficient and accurate move generation, ensuring compliance with chess rules.
 
-Installation:
+### Evaluation Function
+A custom evaluation function considers both material advantage and tactical factors, including:
+- **Doubled Pawns**: Penalizes positions where pawns of the same color are stacked on the same file.
+- **Rooks on Open Files**: Rewards positions where rooks are on open files or doubled on the same rank/file, increasing board control.
+- **Piece Mobility**: Rewards pieces for occupying positions that maximize their control over the board.
 
-Prerequisites:
-C++: This engine is written in C++ and requires a compatible compiler (e.g., GCC or Clang).
-disservin's chess library is already included in the github file, and downloading the library seperately is not needed. 
+### Search and Evaluation Algorithms
+- **Minimax with Alpha-Beta Pruning**
+- **Quiescence Search** (Temporarily Disabled)
+- **Transposition Tables**
 
-Building the Chess Engine
-Clone the chess engine repository and build the project:
+## Installation
 
-if ssh:
+### Prerequisites
+- **C++ Compiler**: Requires a C++20 compatible compiler (e.g., GCC or Clang).
+- **Chess Library**: disservin's chess library is included in the repository, so no separate download is needed.
+
+### Building the Chess Engine
+Clone the repository and build the project:
+
+```bash
+# If using SSH:
 git clone git@github.com:guo-vincent/Chess_Evaluation_Neural_Network.git
-if url: 
-https://github.com/guo-vincent/Chess_Evaluation_Neural_Network.git
 
+# If using HTTPS:
+git clone https://github.com/guo-vincent/Chess_Evaluation_Neural_Network.git
 
-Usage
-The main file to use is test.cpp. 
-Run <g++ -std=c++20 -o test test.cpp> to compile, followed by <./test>
-Alternatively, you may directly execute the test.exe file located in the folder.
+### Usage
+
+#### Running the Engine
+
+To Compile:
+- **The main file to use is `test.cpp`.**
+- **Run the following command to compile the engine:**
+  ```bash
+  g++ -std=c++20 -o test test.cpp
+
 
 The test file when executed, will write a board object in board.txt. 
 The location for which the board is to be outputted can be specified.
@@ -45,7 +56,7 @@ This engine is stronger playing as white than as black, though it still makes st
 This is not a strong engine. Don't expect amazing plays from it. 
 Quiescence Search has been temporarily disabled for being a buggy. It will be reenabled when the bugs are resolved.
 
-Command Line Usage
+Command Line Usage:
 In bash:
 cd /path_to_this_project/ChessCpp
 {compiler test.cpp}
