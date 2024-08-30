@@ -15,8 +15,8 @@ A custom evaluation function considers both material advantage and tactical fact
 
 ### Search and Evaluation Algorithms
 - **Minimax with Alpha-Beta Pruning**
-- **Quiescence Search** (Temporarily Disabled)
 - **Transposition Tables**
+- **Quiescence Search** (Temporarily Disabled. Currently being fixed)
 
 ## Installation
 
@@ -39,7 +39,7 @@ git clone https://github.com/guo-vincent/Chess_Evaluation_Neural_Network.git
 #### Running the Engine
 
 To Compile:
-The main file to use is `test.cpp`.**
+The main file to use is `test.cpp`.
 Run the following command to compile the engine:
   ```bash
   g++ -std=c++20 -o test test.cpp
