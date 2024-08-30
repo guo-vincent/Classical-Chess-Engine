@@ -39,11 +39,10 @@ git clone https://github.com/guo-vincent/Chess_Evaluation_Neural_Network.git
 #### Running the Engine
 
 To Compile:
-- **The main file to use is `test.cpp`.**
-- **Run the following command to compile the engine:**
+The main file to use is `test.cpp`.**
+Run the following command to compile the engine:
   ```bash
   g++ -std=c++20 -o test test.cpp
-
 
 The test file when executed, will write a board object in board.txt. 
 The location for which the board is to be outputted can be specified.
