@@ -109,13 +109,17 @@ namespace BitOp
 // Other helper functions:
 namespace Helper
 {
-    // Returns true if the intersection of two bitboards contains no 1's.
+    /* Returns true if the intersection of two bitboards contains no 1's.
+       @param b1 1st chess::Bitboard object for comparison.
+       @param b2 2nd chess::Bitboard object for comparison. */
     static bool is_empty(Bitboard b1, Bitboard b2)
     {
         return (b1 & b2).count() < 1;
     }
 
-    // Returns true if the intersection of two bitboards contains a 1.
+    /* Returns true if the intersection of two bitboards contains a 1.
+       @param b1 1st chess::Bitboard object for comparison.
+       @param b2 2nd chess::Bitboard object for comparison. */
     static bool any(Bitboard b1, Bitboard b2)
     {
         return !is_empty(b1, b2);
