@@ -5,15 +5,19 @@ This Chess Engine leverages the disservin's chess library for move generation an
 ## Features
 
 ### Move Generation
+
 - **Chess Library**: Utilizes disservin's chess library for efficient and accurate move generation, ensuring compliance with chess rules.
 
-### Evaluation Function
+### Evaluation
+
 A custom evaluation function considers both material advantage and tactical factors, including:
+
 - **Doubled Pawns**: Penalizes positions where pawns of the same color are stacked on the same file.
 - **Rooks on Open Files**: Rewards positions where rooks are on open files or doubled on the same rank/file, increasing board control.
 - **Piece Mobility**: Rewards pieces for occupying positions that maximize their control over the board.
 
 ### Search and Evaluation Algorithms
+
 - **Minimax with Alpha-Beta Pruning**
 - **Transposition Tables**
 - **Quiescence Search** (Temporarily Disabled. Currently being fixed)
@@ -21,10 +25,12 @@ A custom evaluation function considers both material advantage and tactical fact
 ## Installation
 
 ### Prerequisites
+
 - **C++ Compiler**: Requires a C++20 compatible compiler (e.g., GCC or Clang).
 - **Chess Library**: disservin's chess library is included in the repository, so no separate download is needed.
 
 ### Building the Chess Engine
+
 Clone the repository and build the project:
 
 ```bash
