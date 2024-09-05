@@ -7,11 +7,13 @@
 #include <string>
 #include <algorithm>
 
-using Bitboard = chess::Bitboard;
-using Color = chess::Color;
-using PieceType = chess::PieceType;
-using File = chess::File;
-using Rank = chess::Rank;
+namespace { // To avoid polluting the global namespace
+    using Bitboard = chess::Bitboard;
+    using Color = chess::Color;
+    using PieceType = chess::PieceType;
+    using File = chess::File;
+    using Rank = chess::Rank;
+}
 
 // Need to add ability for pieces to check the possibility of being captured as part of the eval function, king safety, and rooks on the seventh.
 // Then I'll work on evaluating king safety.
