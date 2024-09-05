@@ -8,47 +8,71 @@
 #include <limits>
 #include <unordered_map>
 
-void tokenize(const std::string move, std::string &from_square, std::string &to_square, chess::PieceType &promotion_piece, int &is_castling) {
+void tokenize(const std::string move, std::string &from_square, std::string &to_square, chess::PieceType &promotion_piece, int &is_castling)
+{
     promotion_piece = chess::PieceType::NONE;
     int move_length = move.length();
-    if (move == "O-O") {
+    if (move == "O-O")
+    {
         from_square = "";
         to_square = "";
         is_castling = -1;
-    } else if (move == "O-O-O") {
+    }
+    else if (move == "O-O-O")
+    {
         from_square = "";
         to_square = "";
         is_castling = 1;
-    } else if (move_length == 4) {
+    }
+    else if (move_length == 4)
+    {
         from_square = move.substr(0, 2);
         to_square = move.substr(2, 2);
-    } else if (move_length == 5) {
+    }
+    else if (move_length == 5)
+    {
         from_square = move.substr(0, 2);
         to_square = move.substr(2, 2);
-        switch (move[4]) {
-            case 'q': promotion_piece = chess::PieceType::QUEEN; break;
-            case 'r': promotion_piece = chess::PieceType::ROOK; break;
-            case 'b': promotion_piece = chess::PieceType::BISHOP; break;
-            case 'n': promotion_piece = chess::PieceType::KNIGHT; break;
-            default: std::cerr << "Invalid promotion piece." << std::endl; break;
+        switch (move[4])
+        {
+        case 'q':
+            promotion_piece = chess::PieceType::QUEEN;
+            break;
+        case 'r':
+            promotion_piece = chess::PieceType::ROOK;
+            break;
+        case 'b':
+            promotion_piece = chess::PieceType::BISHOP;
+            break;
+        case 'n':
+            promotion_piece = chess::PieceType::KNIGHT;
+            break;
+        default:
+            std::cerr << "Invalid promotion piece." << std::endl;
+            break;
         }
-    } else {
+    }
+    else
+    {
         std::cerr << "Invalid move format." << std::endl;
         from_square = "a1";
         to_square = "a1";
     }
 }
 
-struct MoveEval {
+struct MoveEval
+{
     chess::Move move;
     int eval;
 };
 
-bool compareMoves(const MoveEval &a, const MoveEval &b) {
+bool compareMoves(const MoveEval &a, const MoveEval &b)
+{
     return a.eval > b.eval; // Higher evaluation comes first
 }
 
-struct TranspositionEntry {
+struct TranspositionEntry
+{
     int value;
     int depth;
     bool is_exact;
@@ -56,16 +80,20 @@ struct TranspositionEntry {
 
 std::unordered_map<std::size_t, TranspositionEntry> transposition_table;
 
-std::vector<chess::Move> generate_noisy_moves(const chess::Movelist &moves, const chess::Board &data) {
+std::vector<chess::Move> generate_noisy_moves(const chess::Movelist &moves, const chess::Board &data)
+{
     std::vector<chess::Move> noisy_moves;
-    for (const auto &move: moves) {
-        if (data.isCapture(move) || move.typeOf() == chess::Move::PROMOTION) {
+    for (const auto &move : moves)
+    {
+        if (data.isCapture(move) || move.typeOf() == chess::Move::PROMOTION)
+        {
             noisy_moves.push_back(move);
             continue;
         }
         chess::Board new_board = data;
         new_board.makeMove(move);
-        if (new_board.inCheck()) {
+        if (new_board.inCheck())
+        {
             noisy_moves.push_back(move);
         }
     }
@@ -73,29 +101,40 @@ std::vector<chess::Move> generate_noisy_moves(const chess::Movelist &moves, cons
 }
 
 // Currently investigating bugs in caused by calling this function. Until this is fixed, QuiescenceSearch will not be used in the Minimax function.
-int QuiescenceSearch(chess::Board &data, int alpha, int beta, bool maximizing_player) {
+int QuiescenceSearch(chess::Board &data, int alpha, int beta, bool maximizing_player)
+{
     Evaluation evale(data, data.sideToMove());
     int quiescence_score = evale.static_eval();
 
-    if (data.isGameOver().first != chess::GameResultReason::NONE) {
+    if (data.isGameOver().first != chess::GameResultReason::NONE)
+    {
         return quiescence_score;
     }
 
     std::size_t hash = data.hash();
-    if (transposition_table.find(hash) != transposition_table.end()) {
+    if (transposition_table.find(hash) != transposition_table.end())
+    {
         const TranspositionEntry &entry = transposition_table[hash];
-        if (entry.is_exact) return entry.value;
-        if (maximizing_player && entry.value <= alpha) return entry.value;
-        if (!maximizing_player && entry.value >= beta) return entry.value;
+        if (entry.is_exact)
+            return entry.value;
+        if (maximizing_player && entry.value <= alpha)
+            return entry.value;
+        if (!maximizing_player && entry.value >= beta)
+            return entry.value;
     }
 
-    if (maximizing_player) {
-        if (quiescence_score >= beta) {
+    if (maximizing_player)
+    {
+        if (quiescence_score >= beta)
+        {
             return quiescence_score; // Beta cut-off
         }
         alpha = std::max(alpha, quiescence_score);
-    } else {
-        if (quiescence_score <= alpha) {
+    }
+    else
+    {
+        if (quiescence_score <= alpha)
+        {
             return quiescence_score; // Alpha cut-off
         }
         beta = std::min(beta, quiescence_score);
@@ -105,63 +144,80 @@ int QuiescenceSearch(chess::Board &data, int alpha, int beta, bool maximizing_pl
     chess::movegen::legalmoves(moves, data);
     std::vector<chess::Move> noisy_moves = generate_noisy_moves(moves, data);
 
-    if (noisy_moves.empty()) {
+    if (noisy_moves.empty())
+    {
         return quiescence_score;
     }
 
-    if (maximizing_player) {
+    if (maximizing_player)
+    {
         int max_eval = alpha;
-        for (auto &move: noisy_moves) {
+        for (auto &move : noisy_moves)
+        {
             data.makeMove(move);
             int eval = QuiescenceSearch(data, alpha, beta, false);
             data.unmakeMove(move);
             move.setScore(eval);
             max_eval = std::max(max_eval, eval);
             alpha = std::max(alpha, eval);
-            if (alpha >= beta) break; // Beta cut-off
+            if (alpha >= beta)
+                break; // Beta cut-off
         }
         return max_eval;
-    } else {
+    }
+    else
+    {
         int min_eval = beta;
-        for (auto &move: noisy_moves) {
+        for (auto &move : noisy_moves)
+        {
             data.makeMove(move);
             int eval = QuiescenceSearch(data, alpha, beta, true);
             data.unmakeMove(move);
             move.setScore(eval);
             min_eval = std::min(min_eval, eval);
             beta = std::min(beta, eval);
-            if (alpha >= beta) break; // Alpha cut-off
+            if (alpha >= beta)
+                break; // Alpha cut-off
         }
         return min_eval;
     }
 }
 
-int Minimax(chess::Board &data, int depth, int alpha, int beta, bool maximizing_player) {
-    if (depth == 0 || data.isGameOver().first != chess::GameResultReason::NONE) {
+int Minimax(chess::Board &data, int depth, int alpha, int beta, bool maximizing_player)
+{
+    if (depth == 0 || data.isGameOver().first != chess::GameResultReason::NONE)
+    {
         Evaluation e(data, chess::Color::WHITE);
         return e.static_eval();
         // return QuiescenceSearch(data, alpha, beta, maximizing_player);
     }
 
     std::size_t hash = data.hash();
-    if (transposition_table.find(hash) != transposition_table.end()) {
+    if (transposition_table.find(hash) != transposition_table.end())
+    {
         const TranspositionEntry &entry = transposition_table[hash];
-        if (entry.depth >= depth) {
-            if (entry.is_exact) return entry.value;
-            if (maximizing_player && entry.value <= alpha) return entry.value;
-            if (!maximizing_player && entry.value >= beta) return entry.value;
+        if (entry.depth >= depth)
+        {
+            if (entry.is_exact)
+                return entry.value;
+            if (maximizing_player && entry.value <= alpha)
+                return entry.value;
+            if (!maximizing_player && entry.value >= beta)
+                return entry.value;
         }
     }
 
     chess::Movelist moves;
     chess::movegen::legalmoves(moves, data);
 
-    if (moves.empty()) {
-        return maximizing_player ? -std::numeric_limits<int>::infinity(): std::numeric_limits<int>::infinity();
+    if (moves.empty())
+    {
+        return maximizing_player ? -std::numeric_limits<int>::infinity() : std::numeric_limits<int>::infinity();
     }
 
     std::vector<MoveEval> move_evals;
-    for (const auto &move: moves) {
+    for (const auto &move : moves)
+    {
         data.makeMove(move);
         int eval = Evaluation(data, data.sideToMove()).static_eval();
         move_evals.push_back({move, eval});
@@ -171,74 +227,93 @@ int Minimax(chess::Board &data, int depth, int alpha, int beta, bool maximizing_
     std::sort(move_evals.begin(), move_evals.end(), compareMoves);
 
     int eval;
-    if (maximizing_player) {
+    if (maximizing_player)
+    {
         int max_eval = -std::numeric_limits<int>::infinity();
-        for (auto &move_eval: move_evals) {
+        for (auto &move_eval : move_evals)
+        {
             data.makeMove(move_eval.move);
             eval = Minimax(data, depth - 1, alpha, beta, false);
             data.unmakeMove(move_eval.move);
             move_eval.move.setScore(eval);
             max_eval = std::max(max_eval, eval);
             alpha = std::max(alpha, eval);
-            if (beta <= alpha) break; // Beta cut-off
+            if (beta <= alpha)
+                break; // Beta cut-off
         }
         transposition_table[hash] = {max_eval, depth, true};
         return max_eval;
-    } else {
+    }
+    else
+    {
         int min_eval = std::numeric_limits<int>::infinity();
-        for (auto &move_eval: move_evals) {
+        for (auto &move_eval : move_evals)
+        {
             data.makeMove(move_eval.move);
             eval = Minimax(data, depth - 1, alpha, beta, true);
             data.unmakeMove(move_eval.move);
             move_eval.move.setScore(eval);
             min_eval = std::min(min_eval, eval);
             beta = std::min(beta, min_eval);
-            if (beta <= alpha) break; // Alpha cut-off
+            if (beta <= alpha)
+                break; // Alpha cut-off
         }
         transposition_table[hash] = {min_eval, depth, true};
         return min_eval;
     }
 }
 
-chess::Move find_best_move(chess::Board &data, int max_depth, chess::Color color) {
+chess::Move find_best_move(chess::Board &data, int max_depth, chess::Color color)
+{
     chess::Move best_move;
-    int best_eval = (color == chess::Color::WHITE) ? -std::numeric_limits<int>::infinity(): std::numeric_limits<int>::infinity();
+    int best_eval = (color == chess::Color::WHITE) ? -std::numeric_limits<int>::infinity() : std::numeric_limits<int>::infinity();
 
-    for (int depth = 1; depth <= max_depth; ++depth) {
+    for (int depth = 1; depth <= max_depth; ++depth)
+    {
         int alpha = -std::numeric_limits<int>::infinity();
         int beta = std::numeric_limits<int>::infinity();
         chess::Movelist moves;
         chess::movegen::legalmoves(moves, data);
 
-        if (moves.size() == 1) return moves[0];
+        if (moves.size() == 1)
+            return moves[0];
 
         chess::Move best_move_for_depth = moves[0];
-        int best_eval_for_depth = (color == chess::Color::WHITE) ? -std::numeric_limits<int>::infinity(): std::numeric_limits<int>::infinity();
+        int best_eval_for_depth = (color == chess::Color::WHITE) ? -std::numeric_limits<int>::infinity() : std::numeric_limits<int>::infinity();
 
-        for (const auto &move: moves) {
+        for (const auto &move : moves)
+        {
             data.makeMove(move);
             int eval;
-            if (color == chess::Color::WHITE){
-                eval = Minimax(data, depth-1, alpha, beta, false);
-            } else {
-                eval = Minimax(data, depth-1, alpha, beta, true);
+            if (color == chess::Color::WHITE)
+            {
+                eval = Minimax(data, depth - 1, alpha, beta, false);
+            }
+            else
+            {
+                eval = Minimax(data, depth - 1, alpha, beta, true);
             }
             data.unmakeMove(move);
 
-            if ((color == chess::Color::WHITE && eval > best_eval_for_depth) || (color == chess::Color::BLACK && eval < best_eval_for_depth)) {
+            if ((color == chess::Color::WHITE && eval > best_eval_for_depth) || (color == chess::Color::BLACK && eval < best_eval_for_depth))
+            {
                 best_eval_for_depth = eval;
                 best_move_for_depth = move;
             }
 
-            if (color == chess::Color::WHITE) {
+            if (color == chess::Color::WHITE)
+            {
                 alpha = std::max(alpha, best_eval_for_depth);
-            } else {
+            }
+            else
+            {
                 beta = std::min(beta, best_eval_for_depth);
             }
         }
 
         // Update global best move
-        if ((color == chess::Color::WHITE && best_eval_for_depth > best_eval) || (color == chess::Color::BLACK && best_eval_for_depth < best_eval)) {
+        if ((color == chess::Color::WHITE && best_eval_for_depth > best_eval) || (color == chess::Color::BLACK && best_eval_for_depth < best_eval))
+        {
             best_eval = best_eval_for_depth;
             best_move = best_move_for_depth;
         }
@@ -252,7 +327,8 @@ chess::Move find_best_move(chess::Board &data, int max_depth, chess::Color color
 }
 
 // Currently just lets you play againist the engine in t.txt.
-void run_engine(int depth = 10, std::string outfile = "board.txt") {
+void run_engine(int depth = 10, std::string outfile = "board.txt")
+{
     // Engine configuration variables.
     constexpr char STARTFEN[57] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     int number = 0; // used for determining number of moves made
@@ -267,30 +343,42 @@ void run_engine(int depth = 10, std::string outfile = "board.txt") {
     std::cout << "Choose your side (white/black): ";
     std::cin >> side_choice;
 
-    if (side_choice == "white" || side_choice == "White") {
+    if (side_choice == "white" || side_choice == "White")
+    {
         player_color = chess::Color::WHITE;
-    } else if (side_choice == "black" || side_choice == "Black") {
+    }
+    else if (side_choice == "black" || side_choice == "Black")
+    {
         player_color = chess::Color::BLACK;
-    } else {
+    }
+    else
+    {
         std::cerr << "Invalid choice! Defaulting to Black.\n";
         player_color = chess::Color::BLACK;
     }
 
-    if (outputFile.is_open()) {
+    if (outputFile.is_open())
+    {
         outputFile << board << '\n';
         outputFile << "Move evaluation: " << std::to_string(Evaluation(board, board.sideToMove()).static_eval()) << '\n';
-        while (board.isGameOver().first == chess::GameResultReason::NONE && number <= 1000) {
-            if (board.sideToMove() != player_color) {
+        while (board.isGameOver().first == chess::GameResultReason::NONE && number <= 1000)
+        {
+            if (board.sideToMove() != player_color)
+            {
                 std::cout << "Transposition table size: " << transposition_table.size() << "\n";
                 chess::Move move = find_best_move(board, depth, chess::Color::WHITE);
-                if (number % 5 == 0) transposition_table.clear();
+                if (number % 5 == 0)
+                    transposition_table.clear();
                 outputFile << board.sideToMove() << "'s move: " << move << '\n';
                 std::cout << board.sideToMove() << "'s Move: " << move << " (Move number: " << number << ")\n";
                 board.makeMove(move);
                 outputFile << "Board fen: " << board.getFen() << '\n';
-                outputFile << "Board after move:\n" << board << '\n';
+                outputFile << "Board after move:\n"
+                           << board << '\n';
                 number++;
-            } else {
+            }
+            else
+            {
                 std::string player_input, from_square, to_square;
                 chess::PieceType promotion_piece;
                 chess::Move player_move;
@@ -298,75 +386,108 @@ void run_engine(int depth = 10, std::string outfile = "board.txt") {
 
                 std::cout << "Enter your move (e.g., e2e4 or O-O/O-O-O): ";
                 std::cin >> player_input;
-                
+
                 tokenize(player_input, from_square, to_square, promotion_piece, is_castling);
-                if (is_castling == -1) {
-                    if (player_color == chess::Color::BLACK) {
+                if (is_castling == -1)
+                {
+                    if (player_color == chess::Color::BLACK)
+                    {
                         player_move = chess::Move::make<chess::Move::CASTLING>(chess::Square::underlying::SQ_E8, chess::Square::underlying::SQ_H8);
-                    } else {
+                    }
+                    else
+                    {
                         player_move = chess::Move::make<chess::Move::CASTLING>(chess::Square::underlying::SQ_E1, chess::Square::underlying::SQ_H1);
                     }
-                } else if (is_castling == 1) {
-                    if (player_color == chess::Color::BLACK) {
+                }
+                else if (is_castling == 1)
+                {
+                    if (player_color == chess::Color::BLACK)
+                    {
                         player_move = chess::Move::make<chess::Move::CASTLING>(chess::Square::underlying::SQ_E8, chess::Square::underlying::SQ_A8);
-                    } else {
+                    }
+                    else
+                    {
                         player_move = chess::Move::make<chess::Move::CASTLING>(chess::Square::underlying::SQ_E1, chess::Square::underlying::SQ_A1);
                     }
-                } else {
+                }
+                else
+                {
                     chess::Square from = chess::Square(from_square);
                     chess::Square to = chess::Square(to_square);
-                    if (board.enpassantSq() == to) {
+                    if (board.enpassantSq() == to)
+                    {
                         player_move = chess::Move::make<chess::Move::ENPASSANT>(from, to);
-                    } else {
-                        player_move = (player_input.length() == 4) ? chess::Move().make(from, to): chess::Move().make(from, to, promotion_piece);
                     }
-                    std::cout << "Generated move: " << player_move << '\n' << std::endl;
+                    else
+                    {
+                        player_move = (player_input.length() == 4) ? chess::Move().make(from, to) : chess::Move().make(from, to, promotion_piece);
+                    }
+                    std::cout << "Generated move: " << player_move << '\n'
+                              << std::endl;
                 }
-                    
+
                 chess::Movelist legal_moves;
                 chess::movegen::legalmoves(legal_moves, board);
                 bool is_legal = false;
 
-                for (const chess::Move move : legal_moves) {
-                    if (move == player_move) {
+                for (const chess::Move move : legal_moves)
+                {
+                    if (move == player_move)
+                    {
                         is_legal = true;
                         break;
                     }
                 }
 
-                if (is_legal) {
+                if (is_legal)
+                {
                     board.makeMove(player_move);
                     outputFile << "Your move: " << player_move << '\n';
                     outputFile << "Board fen: " << board.getFen() << '\n';
-                    outputFile << "Board after move:\n" << board << '\n';
+                    outputFile << "Board after move:\n"
+                               << board << '\n';
                     outputFile << "Move evaluation: " << std::to_string(Evaluation(board, board.sideToMove()).static_eval()) << '\n';
-                    std::cout << "Your Move: " << player_move << " (Move number: " << number << ")\n" << std::endl;
-                } else {
-                    std::cerr << "Illegal move entered. Please try again.\n" << std::endl;
+                    std::cout << "Your Move: " << player_move << " (Move number: " << number << ")\n"
+                              << std::endl;
                 }
-            } 
+                else
+                {
+                    std::cerr << "Illegal move entered. Please try again.\n"
+                              << std::endl;
+                }
+            }
         }
 
         auto game_result = board.isGameOver();
-        if (game_result.first == chess::GameResultReason::STALEMATE || 
+        if (game_result.first == chess::GameResultReason::STALEMATE ||
             game_result.first == chess::GameResultReason::INSUFFICIENT_MATERIAL ||
             game_result.first == chess::GameResultReason::FIFTY_MOVE_RULE ||
-            game_result.first == chess::GameResultReason::THREEFOLD_REPETITION) {
+            game_result.first == chess::GameResultReason::THREEFOLD_REPETITION)
+        {
             std::cout << "The game ended in a draw.\n";
-        } else if (game_result.second == chess::GameResult::WIN) {
+        }
+        else if (game_result.second == chess::GameResult::WIN)
+        {
             std::cout << "Black wins!\n";
-        } else if (game_result.second == chess::GameResult::LOSE) {
+        }
+        else if (game_result.second == chess::GameResult::LOSE)
+        {
             std::cout << "White wins!\n";
-        } else {
+        }
+        else
+        {
             std::cout << "Game over with result: " << static_cast<int>(game_result.first) << '\n';
         }
-    } else {
+    }
+    else
+    {
         std::cerr << "Error: Unable to open output file\n";
     }
     outputFile.close();
 }
 
-int main() {
+int main()
+{
     // args: int max_depth, std::string outputfile
     run_engine();
 }
