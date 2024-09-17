@@ -222,7 +222,7 @@ chess::Move find_best_move(chess::Board &data, int max_depth, chess::Color color
     return best_move;
 }
 
-// Currently just lets you play againist the engine in t.txt.
+// Currently just lets you play againist the engine in board.txt.
 void run_engine(int depth = 30, std::string outfile = "board.txt")
 {
     // Engine configuration variables.
@@ -233,7 +233,7 @@ void run_engine(int depth = 30, std::string outfile = "board.txt")
 
     // Side selection variables
     std::string side_choice;
-    chess::Color player_color, opposite_color;
+    chess::Color player_color;
 
     // Select side
     std::cout << "Choose your side (white/black): ";
