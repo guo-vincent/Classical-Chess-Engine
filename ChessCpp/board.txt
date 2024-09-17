@@ -15,3 +15,457 @@ Fullmoves: 1
 EP: 64
 Hash: 5060803636482931868
 
+
+Move evaluation: 0
+Your move: d2d4
+Board fen: rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1
+Board after move:
+ r n b q k b n r 
+ p p p p p p p p 
+ . . . . . . . . 
+ . . . . . . . . 
+ . . . P . . . . 
+ . . . . . . . . 
+ P P P . P P P P 
+ R N B Q K B N R 
+
+
+Side to move: 1
+Castling rights: KQkq
+Halfmoves: 0
+Fullmoves: 1
+EP: 64
+Hash: 9443689642921087454
+
+
+Move evaluation: 185
+b's move: c7c6
+Board fen: rnbqkbnr/pp1ppppp/2p5/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2
+Board after move:
+ r n b q k b n r 
+ p p . p p p p p 
+ . . p . . . . . 
+ . . . . . . . . 
+ . . . P . . . . 
+ . . . . . . . . 
+ P P P . P P P P 
+ R N B Q K B N R 
+
+
+Side to move: 0
+Castling rights: KQkq
+Halfmoves: 0
+Fullmoves: 2
+EP: 64
+Hash: 1257722956240912997
+
+
+Your move: e2e4
+Board fen: rnbqkbnr/pp1ppppp/2p5/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2
+Board after move:
+ r n b q k b n r 
+ p p . p p p p p 
+ . . p . . . . . 
+ . . . . . . . . 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R N B Q K B N R 
+
+
+Side to move: 1
+Castling rights: KQkq
+Halfmoves: 0
+Fullmoves: 2
+EP: 64
+Hash: 15380735101731651439
+
+
+Move evaluation: 413
+b's move: d8a5
+Board fen: rnb1kbnr/pp1ppppp/2p5/q7/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 1 3
+Board after move:
+ r n b . k b n r 
+ p p . p p p p p 
+ . . p . . . . . 
+ q . . . . . . . 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R N B Q K B N R 
+
+
+Side to move: 0
+Castling rights: KQkq
+Halfmoves: 1
+Fullmoves: 3
+EP: 64
+Hash: 864915764680498912
+
+
+Your move: b1c3
+Board fen: rnb1kbnr/pp1ppppp/2p5/q7/3PP3/2N5/PPP2PPP/R1BQKBNR b KQkq - 2 3
+Board after move:
+ r n b . k b n r 
+ p p . p p p p p 
+ . . p . . . . . 
+ q . . . . . . . 
+ . . . P P . . . 
+ . . N . . . . . 
+ P P P . . P P P 
+ R . B Q K B N R 
+
+
+Side to move: 1
+Castling rights: KQkq
+Halfmoves: 2
+Fullmoves: 3
+EP: 64
+Hash: 17840962562964331577
+
+
+Move evaluation: 678
+b's move: f7f6
+Board fen: rnb1kbnr/pp1pp1pp/2p2p2/q7/3PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 0 4
+Board after move:
+ r n b . k b n r 
+ p p . p p . p p 
+ . . p . . p . . 
+ q . . . . . . . 
+ . . . P P . . . 
+ . . N . . . . . 
+ P P P . . P P P 
+ R . B Q K B N R 
+
+
+Side to move: 0
+Castling rights: KQkq
+Halfmoves: 0
+Fullmoves: 4
+EP: 64
+Hash: 4306235803226540870
+
+
+Your move: c1d2
+Board fen: rnb1kbnr/pp1pp1pp/2p2p2/q7/3PP3/2N5/PPPB1PPP/R2QKBNR b KQkq - 1 4
+Board after move:
+ r n b . k b n r 
+ p p . p p . p p 
+ . . p . . p . . 
+ q . . . . . . . 
+ . . . P P . . . 
+ . . N . . . . . 
+ P P P B . P P P 
+ R . . Q K B N R 
+
+
+Side to move: 1
+Castling rights: KQkq
+Halfmoves: 1
+Fullmoves: 4
+EP: 64
+Hash: 1319422819620249666
+
+
+Move evaluation: 731
+b's move: a7a6
+Board fen: rnb1kbnr/1p1pp1pp/p1p2p2/q7/3PP3/2N5/PPPB1PPP/R2QKBNR w KQkq - 0 5
+Board after move:
+ r n b . k b n r 
+ . p . p p . p p 
+ p . p . . p . . 
+ q . . . . . . . 
+ . . . P P . . . 
+ . . N . . . . . 
+ P P P B . P P P 
+ R . . Q K B N R 
+
+
+Side to move: 0
+Castling rights: KQkq
+Halfmoves: 0
+Fullmoves: 5
+EP: 64
+Hash: 13886983470068177054
+
+
+Your move: c3d5
+Board fen: rnb1kbnr/1p1pp1pp/p1p2p2/q2N4/3PP3/8/PPPB1PPP/R2QKBNR b KQkq - 1 5
+Board after move:
+ r n b . k b n r 
+ . p . p p . p p 
+ p . p . . p . . 
+ q . . N . . . . 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P B . P P P 
+ R . . Q K B N R 
+
+
+Side to move: 1
+Castling rights: KQkq
+Halfmoves: 1
+Fullmoves: 5
+EP: 64
+Hash: 48932457803933643
+
+
+Move evaluation: 860
+b's move: h7h6
+Board fen: rnb1kbnr/1p1pp1p1/p1p2p1p/q2N4/3PP3/8/PPPB1PPP/R2QKBNR w KQkq - 0 6
+Board after move:
+ r n b . k b n r 
+ . p . p p . p . 
+ p . p . . p . p 
+ q . . N . . . . 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P B . P P P 
+ R . . Q K B N R 
+
+
+Side to move: 0
+Castling rights: KQkq
+Halfmoves: 0
+Fullmoves: 6
+EP: 64
+Hash: 10545913727955742430
+
+
+Your move: d2a5
+Board fen: rnb1kbnr/1p1pp1p1/p1p2p1p/B2N4/3PP3/8/PPP2PPP/R2QKBNR b KQkq - 0 6
+Board after move:
+ r n b . k b n r 
+ . p . p p . p . 
+ p . p . . p . p 
+ B . . N . . . . 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R . . Q K B N R 
+
+
+Side to move: 1
+Castling rights: KQkq
+Halfmoves: 0
+Fullmoves: 6
+EP: 64
+Hash: 10463357358113465760
+
+
+Move evaluation: 1787
+b's move: a8a7
+Board fen: 1nb1kbnr/rp1pp1p1/p1p2p1p/B2N4/3PP3/8/PPP2PPP/R2QKBNR w KQk - 1 7
+Board after move:
+ . n b . k b n r 
+ r p . p p . p . 
+ p . p . . p . p 
+ B . . N . . . . 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R . . Q K B N R 
+
+
+Side to move: 0
+Castling rights: KQk
+Halfmoves: 1
+Fullmoves: 7
+EP: 64
+Hash: 3584331321992405884
+
+
+Your move: d5b6
+Board fen: 1nb1kbnr/rp1pp1p1/pNp2p1p/B7/3PP3/8/PPP2PPP/R2QKBNR b KQk - 2 7
+Board after move:
+ . n b . k b n r 
+ r p . p p . p . 
+ p N p . . p . p 
+ B . . . . . . . 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R . . Q K B N R 
+
+
+Side to move: 1
+Castling rights: KQk
+Halfmoves: 2
+Fullmoves: 7
+EP: 64
+Hash: 10888468723394459632
+
+
+Move evaluation: 1742
+b's move: g7g5
+Board fen: 1nb1kbnr/rp1pp3/pNp2p1p/B5p1/3PP3/8/PPP2PPP/R2QKBNR w KQk - 0 8
+Board after move:
+ . n b . k b n r 
+ r p . p p . . . 
+ p N p . . p . p 
+ B . . . . . p . 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R . . Q K B N R 
+
+
+Side to move: 0
+Castling rights: KQk
+Halfmoves: 0
+Fullmoves: 8
+EP: 64
+Hash: 1682213486468548730
+
+
+Your move: d1h5
+Board fen: 1nb1kbnr/rp1pp3/pNp2p1p/B5pQ/3PP3/8/PPP2PPP/R3KBNR b KQk - 1 8
+Board after move:
+ . n b . k b n r 
+ r p . p p . . . 
+ p N p . . p . p 
+ B . . . . . p Q 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R . . . K B N R 
+
+
+Side to move: 1
+Castling rights: KQk
+Halfmoves: 1
+Fullmoves: 8
+EP: 64
+Hash: 13210622754459053798
+
+
+Move evaluation: 1592
+b's move: e8d8
+Board fen: 1nbk1bnr/rp1pp3/pNp2p1p/B5pQ/3PP3/8/PPP2PPP/R3KBNR w KQ - 2 9
+Board after move:
+ . n b k . b n r 
+ r p . p p . . . 
+ p N p . . p . p 
+ B . . . . . p Q 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R . . . K B N R 
+
+
+Side to move: 0
+Castling rights: KQ
+Halfmoves: 2
+Fullmoves: 9
+EP: 64
+Hash: 2358329136297229446
+
+
+Your move: b6a8
+Board fen: Nnbk1bnr/rp1pp3/p1p2p1p/B5pQ/3PP3/8/PPP2PPP/R3KBNR b KQ - 3 9
+Board after move:
+ N n b k . b n r 
+ r p . p p . . . 
+ p . p . . p . p 
+ B . . . . . p Q 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R . . . K B N R 
+
+
+Side to move: 1
+Castling rights: KQ
+Halfmoves: 3
+Fullmoves: 9
+EP: 64
+Hash: 3676720339985558390
+
+
+Move evaluation: 1477
+b's move: b7b6
+Board fen: Nnbk1bnr/r2pp3/ppp2p1p/B5pQ/3PP3/8/PPP2PPP/R3KBNR w KQ - 0 10
+Board after move:
+ N n b k . b n r 
+ r . . p p . . . 
+ p p p . . p . p 
+ B . . . . . p Q 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R . . . K B N R 
+
+
+Side to move: 0
+Castling rights: KQ
+Halfmoves: 0
+Fullmoves: 10
+EP: 64
+Hash: 6372343590286875885
+
+
+Your move: a5b6
+Board fen: Nnbk1bnr/r2pp3/pBp2p1p/6pQ/3PP3/8/PPP2PPP/R3KBNR b KQ - 0 10
+Board after move:
+ N n b k . b n r 
+ r . . p p . . . 
+ p B p . . p . p 
+ . . . . . . p Q 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R . . . K B N R 
+
+
+Side to move: 1
+Castling rights: KQ
+Halfmoves: 0
+Fullmoves: 10
+EP: 64
+Hash: 18445416700769062877
+
+
+Move evaluation: 1552
+b's move: a7c7
+Board fen: Nnbk1bnr/2rpp3/pBp2p1p/6pQ/3PP3/8/PPP2PPP/R3KBNR w KQ - 1 11
+Board after move:
+ N n b k . b n r 
+ . . r p p . . . 
+ p B p . . p . p 
+ . . . . . . p Q 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R . . . K B N R 
+
+
+Side to move: 0
+Castling rights: KQ
+Halfmoves: 1
+Fullmoves: 11
+EP: 64
+Hash: 9073663921904757630
+
+
+Your move: b6c7
+Board fen: Nnbk1bnr/2Bpp3/p1p2p1p/6pQ/3PP3/8/PPP2PPP/R3KBNR b KQ - 0 11
+Board after move:
+ N n b k . b n r 
+ . . B p p . . . 
+ p . p . . p . p 
+ . . . . . . p Q 
+ . . . P P . . . 
+ . . . . . . . . 
+ P P P . . P P P 
+ R . . . K B N R 
+
+
+Side to move: 1
+Castling rights: KQ
+Halfmoves: 0
+Fullmoves: 11
+EP: 64
+Hash: 6596805435725060912
+
+
+Move evaluation: 99999

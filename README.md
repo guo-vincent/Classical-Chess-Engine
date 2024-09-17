@@ -59,7 +59,6 @@ The file has only been tested on c++20. It is unknown how the engine will perfor
 Other Notes:
 This engine is stronger playing as white than as black, though it still makes stupid mistakes.
 This is not a strong engine. Don't expect amazing plays from it. 
-Quiescence Search has been temporarily disabled for being a buggy. It will be reenabled when the bugs are resolved.
 
 Command Line Usage:
 In bash:
@@ -76,3 +75,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 Acknowledgments
 Special thanks to disservin for providing the chess library that powers the move generation, and to the open-source community for their continued contributions to chess programming. The source code to their library can be found at {https://github.com/Disservin/chess-library}.
 Note that some edits were made to the chess library (implementing hashing functionality with chess::Piece and chess::PieceType) so the file in this engine does not match the original chess library file.
+
+This project will likely never be truly finished, since the best chess engines take multiple iteerations before becoming viable. I am not sure if I want it to play like a grandmaster, but I'll come back to this project from time to time to improve it.

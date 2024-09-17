@@ -68,7 +68,7 @@ struct MoveEval
 
 bool compareMoves(const MoveEval &a, const MoveEval &b)
 {
-    return a.eval > b.eval; // Higher evaluation comes first
+    return a.eval > b.eval;
 }
 
 struct TranspositionEntry
@@ -80,116 +80,12 @@ struct TranspositionEntry
 
 std::unordered_map<std::size_t, TranspositionEntry> transposition_table;
 
-std::vector<chess::Move> generate_noisy_moves(const chess::Movelist &moves, const chess::Board &data)
-{
-    std::vector<chess::Move> noisy_moves;
-    for (const auto &move : moves)
-    {
-        if (data.isCapture(move) || move.typeOf() == chess::Move::PROMOTION)
-        {
-            noisy_moves.push_back(move);
-            continue;
-        }
-        chess::Board new_board = data;
-        new_board.makeMove(move);
-        if (new_board.inCheck())
-        {
-            noisy_moves.push_back(move);
-        }
-    }
-    return noisy_moves;
-}
-
-// Currently investigating bugs in caused by calling this function. Until this is fixed, QuiescenceSearch will not be used in the Minimax function.
-int QuiescenceSearch(chess::Board &data, int alpha, int beta, bool maximizing_player)
-{
-    Evaluation evale(data, data.sideToMove());
-    int quiescence_score = evale.static_eval();
-
-    if (data.isGameOver().first != chess::GameResultReason::NONE)
-    {
-        return quiescence_score;
-    }
-
-    std::size_t hash = data.hash();
-    if (transposition_table.find(hash) != transposition_table.end())
-    {
-        const TranspositionEntry &entry = transposition_table[hash];
-        if (entry.is_exact)
-            return entry.value;
-        if (maximizing_player && entry.value <= alpha)
-            return entry.value;
-        if (!maximizing_player && entry.value >= beta)
-            return entry.value;
-    }
-
-    if (maximizing_player)
-    {
-        if (quiescence_score >= beta)
-        {
-            return quiescence_score; // Beta cut-off
-        }
-        alpha = std::max(alpha, quiescence_score);
-    }
-    else
-    {
-        if (quiescence_score <= alpha)
-        {
-            return quiescence_score; // Alpha cut-off
-        }
-        beta = std::min(beta, quiescence_score);
-    }
-
-    chess::Movelist moves;
-    chess::movegen::legalmoves(moves, data);
-    std::vector<chess::Move> noisy_moves = generate_noisy_moves(moves, data);
-
-    if (noisy_moves.empty())
-    {
-        return quiescence_score;
-    }
-
-    if (maximizing_player)
-    {
-        int max_eval = alpha;
-        for (auto &move : noisy_moves)
-        {
-            data.makeMove(move);
-            int eval = QuiescenceSearch(data, alpha, beta, false);
-            data.unmakeMove(move);
-            move.setScore(eval);
-            max_eval = std::max(max_eval, eval);
-            alpha = std::max(alpha, eval);
-            if (alpha >= beta)
-                break; // Beta cut-off
-        }
-        return max_eval;
-    }
-    else
-    {
-        int min_eval = beta;
-        for (auto &move : noisy_moves)
-        {
-            data.makeMove(move);
-            int eval = QuiescenceSearch(data, alpha, beta, true);
-            data.unmakeMove(move);
-            move.setScore(eval);
-            min_eval = std::min(min_eval, eval);
-            beta = std::min(beta, eval);
-            if (alpha >= beta)
-                break; // Alpha cut-off
-        }
-        return min_eval;
-    }
-}
-
 int Minimax(chess::Board &data, int depth, int alpha, int beta, bool maximizing_player)
 {
     if (depth == 0 || data.isGameOver().first != chess::GameResultReason::NONE)
     {
         Evaluation e(data, chess::Color::WHITE);
         return e.static_eval();
-        // return QuiescenceSearch(data, alpha, beta, maximizing_player);
     }
 
     std::size_t hash = data.hash();
@@ -327,7 +223,7 @@ chess::Move find_best_move(chess::Board &data, int max_depth, chess::Color color
 }
 
 // Currently just lets you play againist the engine in t.txt.
-void run_engine(int depth = 10, std::string outfile = "board.txt")
+void run_engine(int depth = 30, std::string outfile = "board.txt")
 {
     // Engine configuration variables.
     constexpr char STARTFEN[57] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -337,13 +233,17 @@ void run_engine(int depth = 10, std::string outfile = "board.txt")
 
     // Side selection variables
     std::string side_choice;
-    chess::Color player_color;
+    chess::Color player_color, opposite_color;
 
     // Select side
     std::cout << "Choose your side (white/black): ";
     std::cin >> side_choice;
-
-    if (side_choice == "white" || side_choice == "White")
+    if (side_choice == "") 
+    {
+        std::cerr << "Invalid choice! Defaulting to Black.\n";
+        player_color = chess::Color::BLACK;
+    }
+    else if (side_choice == "white" || side_choice == "White")
     {
         player_color = chess::Color::WHITE;
     }
@@ -366,15 +266,32 @@ void run_engine(int depth = 10, std::string outfile = "board.txt")
             if (board.sideToMove() != player_color)
             {
                 std::cout << "Transposition table size: " << transposition_table.size() << "\n";
-                chess::Move move = find_best_move(board, depth, chess::Color::WHITE);
-                if (number % 5 == 0)
+                chess::Move move = find_best_move(board, depth, player_color);
+
+                // Check that what the computer played is legal. This should never happen, but this is extra assurance.
+                chess::Movelist legal_moves;
+                chess::movegen::legalmoves(legal_moves, board);
+                bool is_legal = false;
+
+                for (const chess::Move moves : legal_moves)
+                {
+                    if (moves == move)
+                    {
+                        is_legal = true;
+                        break;
+                    }
+                }
+                if (!is_legal) // Something went really wrong, and we need to reset the state
+                { 
                     transposition_table.clear();
+                    chess::Move move = find_best_move(board, depth, opposite_color);
+                }
+
                 outputFile << board.sideToMove() << "'s move: " << move << '\n';
                 std::cout << board.sideToMove() << "'s Move: " << move << " (Move number: " << number << ")\n";
                 board.makeMove(move);
                 outputFile << "Board fen: " << board.getFen() << '\n';
-                outputFile << "Board after move:\n"
-                           << board << '\n';
+                outputFile << "Board after move:\n" << board << '\n';
                 number++;
             }
             else

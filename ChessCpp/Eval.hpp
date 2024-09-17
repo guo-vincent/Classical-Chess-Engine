@@ -364,19 +364,19 @@ public:
                 switch (piece_type)
                 {
                 case PieceType::PAWN:
-                    material_value_map[PieceType::PAWN] = 200;
+                    material_value_map[PieceType::PAWN] = 100;
                     break;
                 case PieceType::KNIGHT:
-                    material_value_map[PieceType::KNIGHT] = 600;
+                    material_value_map[PieceType::KNIGHT] = 300;
                     break;
                 case PieceType::BISHOP:
-                    material_value_map[PieceType::BISHOP] = 700;
+                    material_value_map[PieceType::BISHOP] = 350;
                     break;
                 case PieceType::ROOK:
-                    material_value_map[PieceType::ROOK] = 1000;
+                    material_value_map[PieceType::ROOK] = 500;
                     break;
                 case PieceType::QUEEN:
-                    material_value_map[PieceType::QUEEN] = 1800;
+                    material_value_map[PieceType::QUEEN] = 900;
                     break;
                 default:
                     break;
@@ -494,7 +494,7 @@ public:
                 (void)pawns_in_file.pop(); // Remove the least significant bit
             }
         }
-
+        /* Should be accounted for in quiescence search.
         // Encourages pawns to not be in a position where they can be captured
         for (chess::Square sq : pawn_positions)
         {
@@ -512,6 +512,7 @@ public:
                 continue;
             };
         }
+        */
     }
 
     int pawn_score()
@@ -644,6 +645,7 @@ public:
 
         // Fianchetto Bonus (Not yet implemented)
 
+        /*
         // Encourages Bishops to not be in a position where they can be captured
         for (chess::Square sq : bishop_location)
         {
@@ -667,6 +669,7 @@ public:
                 continue;
             }
         }
+        */
     }
 
     int knight_score()
@@ -723,6 +726,7 @@ public:
             knight_mobility += (knight_attacks & ~allied_pieces).count();
         }
 
+        /*
         // Encourages Knights to not be in a position where they can be captured
         for (chess::Square sq : knight_positions)
         {
@@ -746,6 +750,7 @@ public:
                 continue;
             }
         }
+        */
     }
 
     int rook_score()
@@ -828,6 +833,7 @@ public:
             }
         }
 
+        /*
         // Encourages rooks to not be in a position where they can be captured
         for (chess::Square sq : rook_location)
         {
@@ -858,6 +864,7 @@ public:
                 continue;
             }
         }
+        */
     }
 
     int queen_score()
@@ -903,7 +910,6 @@ public:
             }
         }
         // std::cout << color << " Queen Square index: " << std::to_string(square_index) << '\n';
-
         for (int i = 0; i < queen_location.size(); i++)
         {
             Bitboard queen_attacks = chess::attacks::queen(queen_location[i], all_pieces);
